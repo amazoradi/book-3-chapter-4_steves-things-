@@ -4567,7 +4567,7 @@ console.log(eventCommitNumber)
 
 // 6. Which programming langugages were affected by Steve's events?
 
-// event -- payload -- pull_request---head--repo -- languages
+// event -- payload -- pull_request---head--repo -- languages  hi
 
 // 7. What programming language was the most affected by Steve's events?
 
