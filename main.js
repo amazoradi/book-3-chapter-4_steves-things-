@@ -4409,32 +4409,30 @@ const githubData = [
 ];
 
 
-// How many total commits were made in all of Steve's events?
+// 1. How many total commits were made in all of Steve's events?
 
-// class way
+// CLASS SOLUTION
 // loop through outer array, in each object find the comnits object, and find its length
 let totalCommits = 0;
-githubData.forEach( (event) => {  //event is each object in the event
-   // console.log(event.payload.commits.length) this gets an error because the 4th object has no commits section
+githubData.forEach((event) => {  //event is each object in the event
+  // console.log(event.payload.commits.length) this gets an error because the 4th object has no commits section
   // lets add an if statement or has own property
   if (event.payload.hasOwnProperty("commits")) {
-  totalCommits += event.payload.commits.length;
+    totalCommits += event.payload.commits.length;
   }
- 
+
 })
 console.log(totalCommits)
 
-// my original way
+// ORIGINAL SOLUTION
 let numCommit = 0;
 
 githubData.forEach((event) => {
   let i = githubData.indexOf(event)
   for (const monkey in event) {
     if (monkey === "payload") {
-      // console.log(i, githubData[i].payload)
       for (const payloadData in githubData[i].payload) {
         if (payloadData === "commits") {
-          // console.log(i , githubData[i].payload.commits)
           let count = githubData[i].payload.commits.length;
           numCommit += count;
         }
@@ -4445,7 +4443,9 @@ githubData.forEach((event) => {
 console.log(numCommit)
 
 
-// How many of each event type are there?(PullRequestEvent, PushEvent, etc)
+// 2. How many of each event type are there?(PullRequestEvent, PushEvent, etc)
+
+// MY ORIGINAL SOLUTION
 let numPush = 0;
 let numPR = 0;
 let numDel = 0;
@@ -4470,7 +4470,7 @@ githubData.forEach((event) => {
     pullArr.push(eventArr[i]);
     numPR = pullArr.length;
   }
-    else if (eventArr[i] === "DeleteEvent") {
+  else if (eventArr[i] === "DeleteEvent") {
     delArr.push(eventArr[i]);
     numDel = delArr.length;
   }
@@ -4491,46 +4491,61 @@ console.log(numCreate);
 console.log(numIssue);
 
 
-// class (rachel) way
+// CLASS (RACHEL'S) SOLUTION
 let allEvent = [];
 
-githubData.forEach((event) =>{
+githubData.forEach((event) => {
   allEvent.push(event.type)
   // console.log(allEvent)
 })
 let eventCount = {}
-allEvent.forEach( (i) =>{
-  eventCount[i] = (eventCount[i] || 0) +1  //if eventcount (the number of times an event has appeard) is an an item in this object (true) add one if not it is 0 then add one (the first)
+allEvent.forEach((i) => {
+  eventCount[i] = (eventCount[i] || 0) + 1  //if eventcount (the number of times an event has appeard) is an an item in this object (true) add one if not it is 0 then add one (the first)
 })
 console.log(eventCount);
 
 
 
-// List all Github users who submitted a pull request that was approved by Steve.
+// 3.  List all Github users who submitted a pull request that was approved by Steve.
 
 // PullRequestEvent -- payload -- pull_request -- user --login
 // loop though the all objects, in each object find a pullrequest user, extract the names into an array
+
 let collaborators = [];
 
-githubData.forEach((event) => { 
-if (event.type === "PullRequestEvent"){    //isolate the pull requests
-  if (event.payload.pull_request.user.login !== "stevebrownlee") {  // get hte pull requests that were not steves
-  collaborators.push(event.payload.pull_request.user.login)   //add the users to the array
+githubData.forEach((event) => {
+  if (event.type === "PullRequestEvent") {    //isolate the pull requests
+    if (event.payload.pull_request.user.login !== "stevebrownlee") {  // get hte pull requests that were not steves
+      collaborators.push(event.payload.pull_request.user.login)   //add the users to the array
+    }
   }
-}
 });
 console.log(collaborators)
 
 
 
-// List all repositories on which Steve had an event, and show how many events were on each one.
+// 4.List all repositories on which Steve had an event, and show how many events were on each one.
+
+// loop through all objects, isolate the repositories, isolate the ones with steve having an event. list amount of events
+let repoIdList = [];
+let repoCounter = {};
 
 
+githubData.forEach((event) => {
+  if (event.actor.login === "stevebrownlee") {
+    repoIdList.push(event.repo.id)
+  }
+});
 
+repoIdList.forEach((item) => {
+  repoCounter[item] = (repoCounter[item] || 0) + 1;
+});
 
-// Which event had the most number of commits ?
-//   Which programming langugages were affected by Steve's events?
-// What programming language was the most affected by Steve's events?
+console.log(repoCounter);
+
+// 5. Which event had the most number of commits ?
+// 6. Which programming langugages were affected by Steve's events?
+// 7. What programming language was the most affected by Steve's events?
 
 
 
