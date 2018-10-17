@@ -4410,12 +4410,28 @@ const githubData = [
 
 
 // How many total commits were made in all of Steve's events?
+
+// class way
+// loop through outer array, in each object find the comnits object, and find its length
+let totalCommits = 0;
+githubData.forEach( (event) => {  //event is each object in the event
+   // console.log(event.payload.commits.length) this gets an error because the 4th object has no commits section
+  // lets add an if statement or has own property
+  if (event.payload.hasOwnProperty("commits")) {
+  totalCommits += event.payload.commits.length;
+  }
+ 
+})
+console.log(totalCommits)
+
+// my original way
 let numCommit = 0;
 
 githubData.forEach((event) => {
   let i = githubData.indexOf(event)
-  for (const eventData in event) {
-    if (eventData === "payload") {
+  for (const monkey in event) {
+    if (monkey === "payload") {
+      // console.log(i, githubData[i].payload)
       for (const payloadData in githubData[i].payload) {
         if (payloadData === "commits") {
           // console.log(i , githubData[i].payload.commits)
@@ -4454,8 +4470,7 @@ githubData.forEach((event) => {
     pullArr.push(eventArr[i]);
     numPR = pullArr.length;
   }
-
-  else if (eventArr[i] === "DeleteEvent") {
+    else if (eventArr[i] === "DeleteEvent") {
     delArr.push(eventArr[i]);
     numDel = delArr.length;
   }
@@ -4476,9 +4491,23 @@ console.log(numCreate);
 console.log(numIssue);
 
 
+// class (rachel) way
+let allEvent = [];
+
+githubData.forEach((event) =>{
+  allEvent.push(event.type)
+  // console.log(allEvent)
+})
+let eventCount = {}
+allEvent.forEach( (i) =>{
+  eventCount[i] = (eventCount[i] || 0) +1  //if eventcount (the number of times an event has appeard) is an an item in this object (true) add one if not it is 0 then add one (the first)
+})
+console.log(eventCount);
+
 
 
 // List all Github users who submitted a pull request that was approved by Steve.
+
 // PullRequestEvent -- payload -- pull_request -- user --login
 let collaborators = [];
 
