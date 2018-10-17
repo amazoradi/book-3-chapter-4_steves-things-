@@ -4416,7 +4416,6 @@ const githubData = [
 let totalCommits = 0;
 githubData.forEach((event) => {  //event is each object in the event
   // console.log(event.payload.commits.length) this gets an error because the 4th object has no commits section
-  // lets add an if statement or has own property
   if (event.payload.hasOwnProperty("commits")) {
     totalCommits += event.payload.commits.length;
   }
