@@ -4509,27 +4509,28 @@ console.log(eventCount);
 // List all Github users who submitted a pull request that was approved by Steve.
 
 // PullRequestEvent -- payload -- pull_request -- user --login
+// loop though the all objects, in each object find a pullrequest user, extract the names into an array
 let collaborators = [];
 
-githubData.forEach((event) => {
-  let i = githubData.indexOf(event);
-  for (const eventData in event) {
-    if (eventData === "payload") {
-      for (const payloadData in eventData) {
-        if (payloadData === "pull_request") {
-          if (githubData[i].payload.pull_request.user.login !== "stevebrownlee" && githubData[i].payload.pull_request.merge_commit_sha !== null) {
-            collaborators.push(githubData[i].payload.pull_request.user.login);
-          }
-        }
-      }
-    }
+githubData.forEach((event) => { 
+if (event.type === "PullRequestEvent"){    //isolate the pull requests
+  if (event.payload.pull_request.user.login !== "stevebrownlee") {  // get hte pull requests that were not steves
+  collaborators.push(event.payload.pull_request.user.login)   //add the users to the array
   }
+}
 });
+console.log(collaborators)
 
-console.log(collaborators);
 
 
 // List all repositories on which Steve had an event, and show how many events were on each one.
+
+
+
+
 // Which event had the most number of commits ?
 //   Which programming langugages were affected by Steve's events?
 // What programming language was the most affected by Steve's events?
+
+
+
