@@ -4546,6 +4546,7 @@ console.log(repoCounter);
 // 5. Which event had the most number of commits ?
 
 // go through all objects, find commits, commits.length, find the biggest number
+
 let whichEvent = [];
 let numberCommits =[];
 let eventCommitNumber = {};
@@ -4567,9 +4568,22 @@ console.log(eventCommitNumber)
 
 // 6. Which programming langugages were affected by Steve's events?
 
-// event -- payload -- pull_request---head--repo -- languages  hi
+// event -- payload -- pull_request---head--repo -- languages 
+let langs = [];
+let langsCount = {};
+
+githubData.forEach((event) => {
+  if (event.payload.hasOwnProperty("pull_request")){
+   langs.push(event.payload.pull_request.head.repo.language)
+  }
+});
+
+console.log(langs)
 
 // 7. What programming language was the most affected by Steve's events?
 
+langs.forEach((item) => {
+  langsCount[item] = (langsCount[item] || 0) + 1;
+})
 
-
+console.log(langsCount);
